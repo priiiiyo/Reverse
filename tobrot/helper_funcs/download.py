@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# (c) gautamajay52 | Shrimadhav U K
+# (c) gautamajay52 | Shrimadhav U K | Priiiiyo
 
 import asyncio
 import logging
@@ -36,7 +36,7 @@ async def down_load_media_f(client, message):
                 message=message.reply_to_message,
                 file_name=download_location,
                 progress=prog.progress_for_pyrogram,
-                progress_args=("trying to download", c_time),
+                progress_args=("trying to download⤵	", c_time),
             )
         except Exception as g_e:
             await mess_age.edit(str(g_e))
@@ -48,7 +48,7 @@ async def down_load_media_f(client, message):
         await asyncio.sleep(10)
         if the_real_download_location:
             await mess_age.edit_text(
-                f"Downloaded to <code>{the_real_download_location}</code> in <u>{ms}</u> seconds"
+                f"Downloaded to <code>GIllz/Cloud</code> in <u>{ms}</u> seconds"
             )
         else:
             await mess_age.edit_text("😔 Download Cancelled or some error happened")
@@ -100,7 +100,7 @@ async def download_tg(client, message):
         await asyncio.sleep(5)
         if the_real_download_location:
             await mess_age.edit_text(
-                f"Downloaded to <code>{the_real_download_location}</code> in <u>{ms}</u> seconds"
+                f"Downloaded to <code>GIllz/Cloud</code> in <u>{ms}</u> seconds"
             )
         else:
             await mess_age.edit_text("😔 Download Cancelled or some error happened")

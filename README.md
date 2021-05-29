@@ -1,10 +1,13 @@
-# for support join [here](https://telegram.dog/XCODERSHUB)
-# working example group [Leech Here](https://t.me/joinchat/AAAAAFKu8StOzTbtr-Hn0g)
-# For Any Issues/Imrovements or Discussions [go here](https://github.com/AmirulAndalib/TorrentLeech-Gdrive/issues) or [here](https://github.com/AmirulAndalib/TorrentLeech-Gdrive/discussions) 
+## 🔥 PRIIIIYO-LEECH-BOT 🔥
+
+
+# For Updates Join [Here](https://telegram.dog/PriiiiyoBOTs)
+
+# Working Example Group [Leech Here](https://t.me/PriiiiyoLeech) 
 
 # 🤖Telegram Torrent and Direct links Leecher 🔥
 
-### Dont Abuse The Repo ... this is intented to run in Small Places or For Short time 😐
+### Don't Abuse The Repo ... this is intented to run in Small Places or For Short time 😐
 
 ## A Telegram Torrent , Direct Links (and youtube-dl) Leecher based on [Pyrogram](https://github.com/pyrogram/pyrogram)
 
@@ -108,6 +111,7 @@ scope =
 token =
 client_id = 
 client_secret = 
+team_drive =
 
 ```
 2 Copy `rclone.conf` file in the root directory (Where `Dockerfile` exists).
@@ -146,7 +150,7 @@ client_secret =
 
 
 ## Credits, and Thanks to
-* [AmirulANdalib](https://github.com/AmirulAndalib) for Modding 🙄
+* [S M Priiiiyo Hossain](https://github.com/priiiiyo) for Mod 😊
 * [GautamKumar](https://github.com/gautamajay52/TorrentLeech-Gdrive) 😬
 * [SpEcHiDe](https://github.com/SpEcHiDe/PublicLeech) for his wonderful code😚
 * [Rclone Team](https://rclone.org) for theirs awesome tool☁️

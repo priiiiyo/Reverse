@@ -42,7 +42,7 @@ async def save_thumb_nail(client, message):
             + "This image will be used in the upload, till /clearthumbnail."
         )
     else:
-        await ismgs.edit("❌ Reply to a photo to save custom thumbnail")
+        await ismgs.edit("Reply to a photo to save custom thumbnail")
 
 
 async def clear_thumb_nail(client, message):
@@ -55,4 +55,4 @@ async def clear_thumb_nail(client, message):
         os.remove(thumb_image_path)
         await ismgs.edit("✅ Custom thumbnail cleared successfully.")
     else:
-        await ismgs.edit("❌ Nothing to clear.")
+        await ismgs.edit("cleared ✅.")

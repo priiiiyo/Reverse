@@ -1,7 +1,7 @@
 # This is code to clone the gdrive link using the gclone, all credit goes to the developer who has developed the rclone/glclone
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# (c) gautamajay52
+# (c) gautamajay52 | Priiiiyo
 
 
 import asyncio
@@ -140,7 +140,7 @@ class CloneHelper:
             g_cmd = [
                 "rclone",
                 "size",
-                "--config=./rclone.conf",
+                "--config=rclone.conf",
                 f"{self.dname}:{destination}/{self.name}",
             ]
             LOGGER.info(g_cmd)
@@ -166,7 +166,7 @@ class CloneHelper:
         cmd = [
             "/app/gautam/gclone",
             "copy",
-            "--config=./rclone.conf",
+            "--config=rclone.conf",
             f"{self.dname}:{idd}",
             f"{self.dname}:{destination}/{self.name}",
             "-v",

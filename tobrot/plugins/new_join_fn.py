@@ -1,11 +1,21 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# (c) Shrimadhav U K
+# (c) Shrimadhav U K | Priiiiyo
 
-import logging
+# the logging things
+import logging, os
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+logging.getLogger("pyrogram").setLevel(logging.WARNING)
+LOGGER = logging.getLogger(__name__)
 
 import pyrogram
-from tobrot import AUTH_CHANNEL, LOGGER
+
+from tobrot import (
+    AUTH_CHANNEL
+)
 
 
 async def new_join_f(client, message):
@@ -13,18 +23,22 @@ async def new_join_f(client, message):
     if chat_type != "private":
         await message.reply_text(f"Current CHAT ID: <code>{message.chat.id}</code>")
         # leave chat
-        await client.leave_chat(chat_id=message.chat.id, delete=True)
+        await client.leave_chat(
+            chat_id=message.chat.id,
+            delete=True
+        )
     # delete all other messages, except for AUTH_CHANNEL
     await message.delete(revoke=True)
 
 
 async def help_message_f(client, message):
-    # await message.reply_text("no one gonna help you 🤣🤣🤣🤣", quote=True)
-    # channel_id = str(AUTH_CHANNEL)[4:]
-    # message_id = 99
+    # await message.reply_text("", quote=True)
+    #channel_id = str(AUTH_CHANNEL)[4:]
+    #message_id = 99
     # display the /help
-
-    await message.reply_text(
-        """join this group for help-- @GbotStoreSupport\n\n And also don't forget to star/fork this repo: <a href="https://github.com/gautamajay52/TorrentLeech-Gdrive">TorrentLeech-Gdrive</a>""",
-        disable_web_page_preview=True,
-    )
+    DEV = os.environ.get("DEV", "@priiiiyo")
+    button = []
+    link = "https://telegra.ph/Help-Message-03-12"
+    button.append([pyrogram.InlineKeyboardButton(text="Click to Read", url=f"{link}")])
+    button_markup = pyrogram.InlineKeyboardMarkup(button)
+    await message.reply_text(f"",reply_markup=button_markup)
