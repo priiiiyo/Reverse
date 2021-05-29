@@ -5,6 +5,7 @@
 import asyncio
 import logging
 import os
+import re
 import io
 import sys
 import time
