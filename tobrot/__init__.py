@@ -116,6 +116,7 @@ PURGEME_COMMAND = os.environ.get("PURGEME_COMMAND", "purgeme") + BOT
 RCLONE_COMMAND = os.environ.get("RCLONE_COMMAND", "rclone") + BOT
 CLONE_COMMAND_G = os.environ.get("CLONE_COMMAND_G", "gclone") + BOT
 UPLOAD_COMMAND = os.environ.get("UPLOAD_COMMAND", "uplooad") + BOT
+RENAME_COMMAND = os.environ.get("RENAME_COMMAND", "rename") + BOT
 RENEWME_COMMAND = os.environ.get("RENEWME_COMMAND", "renewme") + BOT
 BOT_START_TIME = time.time()
 # dict to control uploading and downloading
