@@ -10,6 +10,7 @@ import io
 import sys
 import time
 import pyprog
+import requests
 import psutil
 import aria2p
 
