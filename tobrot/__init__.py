@@ -47,7 +47,7 @@ for imp in ["TG_BOT_TOKEN", "APP_ID", "API_HASH", "OWNER_ID", "AUTH_CHANNEL"]:
         exit()
 
 # The Telegram API things
-BOT = os.environ.get("BOTNAME", "")
+BOT = os.environ.get("BOT", "")
 TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "")
 APP_ID = int(os.environ.get("APP_ID", "12345"))
 API_HASH = os.environ.get("API_HASH")
@@ -102,7 +102,7 @@ DESTINATION_FOLDER = os.environ.get("DESTINATION_FOLDER", "Priiiiyo Leech ZonE")
 INDEX_LINK = os.environ.get("INDEX_LINK", "")
 TELEGRAM_LEECH_COMMAND = os.environ.get("TELEGRAM_LEECH_COMMAND", "tleech") + BOT
 TELEGRAM_LEECH_UNZIP_COMMAND = os.environ.get("TELEGRAM_LEECH_UNZIP_COMMAND", "tleechunzip") + BOT
-CANCEL_COMMAND_G = os.environ.get("CANCEL_COMMAND_G", "cancel")
+CANCEL_COMMAND_G = os.environ.get("CANCEL_COMMAND_G", "cancel") +BOT
 GET_SIZE_G = os.environ.get("GET_SIZE_G", "getsize") + BOT
 STATUS_COMMAND = os.environ.get("STATUS_COMMAND", "status") + BOT
 SAVE_THUMBNAIL = os.environ.get("SAVE_THUMBNAIL", "setthumb") + BOT
@@ -111,6 +111,8 @@ UPLOAD_AS_DOC = os.environ.get("UPLOAD_AS_DOC", "False")
 PYTDL_COMMAND = os.environ.get("PYTDL_COMMAND", "pytdl") + BOT
 GPYTDL_COMMAND = os.environ.get("GPYTDL_COMMAND", "gpytdl") + BOT
 LOG_COMMAND = os.environ.get("LOG_COMMAND", "log") + BOT
+HELP_COMMAND = os.environ.get("HELP_COMMAND", "help") + BOT
+PURGEME_COMMAND = os.environ.get("PURGEME_COMMAND", "purgeme") + BOT
 CLONE_COMMAND_G = os.environ.get("CLONE_COMMAND_G", "gclone") + BOT
 UPLOAD_COMMAND = os.environ.get("UPLOAD_COMMAND", "uplooad") + BOT
 RENEWME_COMMAND = os.environ.get("RENEWME_COMMAND", "renewme") + BOT
