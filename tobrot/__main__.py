@@ -29,8 +29,12 @@ from tobrot import (
     LEECH_ZIP_COMMAND,
     LOG_COMMAND,
     LOGGER,
+    HELP_COMMAND,
+    PURGEME_COMMAND,
     PYTDL_COMMAND,
+    RCLONE_COMMAND,
     RENEWME_COMMAND,
+    RENAME_COMMAND,
     SAVE_THUMBNAIL,
     STATUS_COMMAND,
     TELEGRAM_LEECH_UNZIP_COMMAND,
@@ -104,7 +108,7 @@ if __name__ == "__main__":
     #
     incoming_purge_message_handler = MessageHandler(
         incoming_purge_message_f,
-        filters=filters.command(["purgeme"]) & filters.chat(chats=AUTH_CHANNEL),
+        filters=filters.command([f"{PURGEME_COMMAND"]) & filters.chat(chats=AUTH_CHANNEL),
     )
     app.add_handler(incoming_purge_message_handler)
     #
@@ -170,7 +174,7 @@ if __name__ == "__main__":
     #
     rename_message_handler = MessageHandler(
         rename_tg_file,
-        filters=filters.command(["rename"]) & filters.chat(chats=AUTH_CHANNEL),
+        filters=filters.command([f"{RENAME_COMMAND}"]) & filters.chat(chats=AUTH_CHANNEL),
     )
     app.add_handler(rename_message_handler)
     #
@@ -189,7 +193,7 @@ if __name__ == "__main__":
     #
     help_text_handler = MessageHandler(
         help_message_f,
-        filters=filters.command(["help"]) & filters.chat(chats=AUTH_CHANNEL),
+        filters=filters.command([f"{HELP_COMMAND}"]) & filters.chat(chats=AUTH_CHANNEL),
     )
     app.add_handler(help_text_handler)
     #
@@ -234,7 +238,7 @@ if __name__ == "__main__":
     app.add_handler(clear_thumb_nail_handler)
     #
     rclone_config_handler = MessageHandler(
-        rclone_command_f, filters=filters.command(["rclone"])
+        rclone_command_f, filters=filters.command([f"{RCLONE_COMMAND"])
     )
     app.add_handler(rclone_config_handler)
     #
