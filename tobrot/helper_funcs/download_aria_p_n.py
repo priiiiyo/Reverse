@@ -33,9 +33,41 @@ from tobrot.helper_funcs.extract_link_from_message import extract_link
 from tobrot.helper_funcs.upload_to_tg import upload_to_gdrive, upload_to_tg
 from tobrot.helper_funcs.direct_link_generator import direct_link_generator
 from tobrot.helper_funcs.exceptions import DirectDownloadLinkException
-
 sys.setrecursionlimit(10 ** 4)
 
+def KopyasizListe(string):
+    kopyasiz = list(string.split(","))
+    kopyasiz = list(dict.fromkeys(kopyasiz))
+    return kopyasiz
+
+def Virgullustring(string):
+    string = string.replace("\n\n",",")
+    string = string.replace("\n",",")
+    string = string.replace(",,",",")
+    string = string.rstrip(',')
+    string = string.lstrip(',')
+    return string
+
+tracker_urlsss = [
+    "https://raw.githubusercontent.com/XIU2/TrackersListCollection/master/all.txt",
+    "https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt",
+    "https://raw.githubusercontent.com/DeSireFire/animeTrackerList/master/AT_all.txt"
+    ]
+tumtorrenttrackerstringi = ""
+sonstringtrckr = ""
+for i in range(len(tracker_urlsss)):
+    response = requests.get(tracker_urlsss[i])
+    response.encoding = "utf-8"
+    tumtorrenttrackerstringi += "\n"
+    tumtorrenttrackerstringi += response.text
+trackerlistemiz = KopyasizListe(Virgullustring(tumtorrenttrackerstringi))
+sonstringtrckr = ','.join(trackerlistemiz)
+# LOGGER.info(sonstringtrckr)
+# trackelreri alıyoz dinamik olarak
+async def aria_start():
+    global sonstringtrckr
+    aria2_daemon_start_cmd = []
+    # start the daemon, aria2c command
 
 async def aria_start():
     aria2_daemon_start_cmd = []
@@ -126,6 +158,10 @@ def add_url(aria_instance, text_url, c_file_name):
     #     options = {
     #         "dir": c_file_name
     #     }
+    #
+    # or "cloud.mail.ru" in text_url \  doesnt work.
+    # or "github.com" in text_url \   doesnt work.
+    #
     if "zippyshare.com" in text_url \
         or "osdn.net" in text_url \
         or "mediafire.com" in text_url \
@@ -258,10 +294,10 @@ async def call_apropriate_function(
                     message_to_send += "\n"
                 if message_to_send != "":
                     mention_req_user = (
-                        f"<a href='tg://user?id={user_id}'>𝐒ender</a>\n\n"
+                        f"<a href='tg://user?id={user_id}'>ֆօʊʀƈɛ ƈօɖɛ</a>\n\n"
                     )
                     message_to_send = mention_req_user + message_to_send
-                    message_to_send = message_to_send + "\n\n" + "#BOT1uploads"
+                    message_to_send = message_to_send + "\n\n" + "💫 𝗣𝗼𝘄𝗲𝗿𝗲𝗱 𝗕𝘆 : 𝗣𝗿𝗶𝗶𝗶𝗶𝘆𝗼𝗕𝗢𝗧𝘀"
                 else:
                     message_to_send = "<i>FAILED</i> to upload files. 😞😞"
                 await user_message.reply_text(
@@ -315,9 +351,9 @@ async def check_progress_for_dl(aria2, gid, event, previous_message):
                 i = 0
                 i = int(i)
                 STR = int(os.environ.get("STR", 30))
-                msg = f"╭──── ⌊ 📥 <b>Downloading</b> ⌉ \n"
+                msg = f"╭──── ⌊ 📥 <b>𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱𝗶𝗻𝗴...</b> ⌉ \n"
                 msg += "│"+"\n├"+f"{prg}\n" +"│"
-                msg += f"\n├<b>FileName</b> 📚: "
+                msg += f"\n├<b>𝗙𝗶𝗹𝗲 𝗡𝗮𝗺𝗲</b> 📚: "
                 while(len(downloading_dir_name)>0):
                     st = downloading_dir_name[0:STR]
                     if(i==0):
@@ -328,22 +364,22 @@ async def check_progress_for_dl(aria2, gid, event, previous_message):
                         msg += f"\n│{st}"
                         downloading_dir_name = downloading_dir_name[STR:len(downloading_dir_name)]
 			
-                msg += f"\n├<b>Speed</b> 🚀 :  <code>{file.download_speed_string()} </code>"
-                msg += f"\n├<b>Total Size</b> 🗂 :  <code>{file.total_length_string()}</code>"
+                msg += f"\n├<b>𝗦𝗽𝗲𝗲𝗱</b> 🚀 :  <code>{file.download_speed_string()} </code>"
+                msg += f"\n├<b>𝗧𝗼𝘁𝗮𝗹 𝗦𝗶𝘇𝗲</b> 🗂 :  <code>{file.total_length_string()}</code>"
 
                 if is_file is None :
-                   msg += f"\n├<b>Connections</b> 📬 :  <code>{file.connections}</code>"
+                   msg += f"\n├<b>𝗖𝗼𝗻𝗻𝗲𝗰𝘁𝗶𝗼𝗻𝘀</b> 📬 :  <code>{file.connections}</code>"
                 else :
-                   msg += f"\n├<b>Info</b> 📄 : <code>[ P : {file.connections} || S : {file.num_seeders} ]</code>"
+                   msg += f"\n├<b>𝐈𝐧𝐟𝐨</b> 📄 : <code>[ P : {file.connections} || S : {file.num_seeders} ]</code>"
 
-                # msg += f"\n<b>Status</b> : <code>{file.status}</code>"
-                msg += f"\n├<b>ETA</b> ⏳ :  <code>{file.eta_string()}</code>" +"\n│"
+                # msg += f"\n<b>𝐒𝐭𝐚𝐭𝐮𝐬</b> : <code>{file.status}</code>"
+                msg += f"\n├<b>𝗘𝗧𝗔</b> ⏳ :  <code>{file.eta_string()}</code>" +"\n│"
                 msg += "\n╰─── ⌊ ⚡️ using engine aria2 ⌉"
                 inline_keyboard = []
                 ikeyboard = []
                 ikeyboard.append(
                     InlineKeyboardButton(
-                        "Cancel 🚫", callback_data=(f"cancel {gid}").encode("UTF-8")
+                        "𝐂𝐚𝐧𝐜𝐞𝐥 🚫", callback_data=(f"cancel {gid}").encode("UTF-8")
                     )
                 )
                 inline_keyboard.append(ikeyboard)
@@ -378,16 +414,16 @@ async def check_progress_for_dl(aria2, gid, event, previous_message):
             await check_progress_for_dl(aria2, gid, event, previous_message)
         else:
             LOGGER.info(
-                f"Downloaded Successfully: `{file.name} ({file.total_length_string()})` 🤒"
+                f"Downloaded Successfully 💯: `{file.name} ({file.total_length_string()})` 🤒"
             )
             await asyncio.sleep(EDIT_SLEEP_TIME_OUT)
             await event.edit(
-                f"Downloaded Successfully: `{file.name} ({file.total_length_string()})` 🤒"
+                f"Downloaded Successfully 💯: `{file.name} ({file.total_length_string()})` 🤒"
             )
             return True
     except aria2p.client.ClientException:
         await event.edit(
-            f"Download cancelled :\n<code>{file.name} ({file.total_length_string()})</code>"
+            f"Download cancelled ❌:\n<code>{file.name} ({file.total_length_string()})</code>"
         )
     except MessageNotModified as ep:
         LOGGER.info(ep)
@@ -407,7 +443,7 @@ async def check_progress_for_dl(aria2, gid, event, previous_message):
         LOGGER.info(str(e))
         if "not found" in str(e) or "'file'" in str(e):
             await event.edit(
-                f"Download cancelled :\n<code>{file.name} ({file.total_length_string()})</code>"
+                f"Download cancelled ❌:\n<code>{file.name} ({file.total_length_string()})</code>"
             )
             return False
         else:
