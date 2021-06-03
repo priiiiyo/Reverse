@@ -108,7 +108,7 @@ if __name__ == "__main__":
     #
     incoming_purge_message_handler = MessageHandler(
         incoming_purge_message_f,
-        filters=filters.command([f"{PURGEME_COMMAND"]) & filters.chat(chats=AUTH_CHANNEL),
+        filters=filters.command([f"{PURGEME_COMMAND}"]) & filters.chat(chats=AUTH_CHANNEL),
     )
     app.add_handler(incoming_purge_message_handler)
     #
@@ -238,7 +238,7 @@ if __name__ == "__main__":
     app.add_handler(clear_thumb_nail_handler)
     #
     rclone_config_handler = MessageHandler(
-        rclone_command_f, filters=filters.command([f"{RCLONE_COMMAND"])
+        rclone_command_f, filters=filters.command([f"{RCLONE_COMMAND}"])
     )
     app.add_handler(rclone_config_handler)
     #
