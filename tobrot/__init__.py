@@ -113,6 +113,7 @@ GPYTDL_COMMAND = os.environ.get("GPYTDL_COMMAND", "gpytdl") + BOT
 LOG_COMMAND = os.environ.get("LOG_COMMAND", "log") + BOT
 HELP_COMMAND = os.environ.get("HELP_COMMAND", "help") + BOT
 PURGEME_COMMAND = os.environ.get("PURGEME_COMMAND", "purgeme") + BOT
+RCLONE_COMMAND = os.environ.get("RCLONE_COMMAND", "rclone") + BOT
 CLONE_COMMAND_G = os.environ.get("CLONE_COMMAND_G", "gclone") + BOT
 UPLOAD_COMMAND = os.environ.get("UPLOAD_COMMAND", "uplooad") + BOT
 RENEWME_COMMAND = os.environ.get("RENEWME_COMMAND", "renewme") + BOT
