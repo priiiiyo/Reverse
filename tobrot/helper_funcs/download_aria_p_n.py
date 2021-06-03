@@ -287,7 +287,7 @@ async def call_apropriate_function(
                     message_id = final_response[key_f_res_se]
                     channel_id = str(sent_message_to_update_tg_p.chat.id)[4:]
                     private_link = f"https://t.me/c/{channel_id}/{message_id}"
-                    message_to_send += "🥏 <a href='"
+                    message_to_send += "⭕ <a href='"
                     message_to_send += private_link
                     message_to_send += "'>"
                     message_to_send += local_file_name
@@ -295,10 +295,10 @@ async def call_apropriate_function(
                     message_to_send += "\n"
                 if message_to_send != "":
                     mention_req_user = (
-                        f"<a href='tg://user?id={user_id}'>ֆօʊʀƈɛ ƈօɖɛ</a>\n\n"
+                        f"<a href='tg://user?id={user_id}'>ꜱᴏᴜʀᴄᴇ ᴄᴏᴅᴇ 😑</a>\n\n"
                     )
                     message_to_send = mention_req_user + message_to_send
-                    message_to_send = message_to_send + "\n\n" + "💫 𝗣𝗼𝘄𝗲𝗿𝗲𝗱 𝗕𝘆 : 𝗣𝗿𝗶𝗶𝗶𝗶𝘆𝗼𝗕𝗢𝗧𝘀"
+                    message_to_send = message_to_send + "\n\n" + "✅ 𝗣𝗼𝘄𝗲𝗿𝗲𝗱 𝗕𝘆 : @PriiiiyoBOTs"
                 else:
                     message_to_send = "<i>FAILED</i> to upload files. 😞😞"
                 await user_message.reply_text(
@@ -352,9 +352,9 @@ async def check_progress_for_dl(aria2, gid, event, previous_message):
                 i = 0
                 i = int(i)
                 STR = int(os.environ.get("STR", 30))
-                msg = f"╭──── ⌊ 📥 <b>𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱𝗶𝗻𝗴...</b> ⌉ \n"
+                msg = f"╭──── ⌊ 📥 <b>𝑫𝒐𝒘𝒏𝒍𝒐𝒂𝒅𝒊𝒏𝒈...</b> ⌉ \n"
                 msg += "│"+"\n├"+f"{prg}\n" +"│"
-                msg += f"\n├<b>𝗙𝗶𝗹𝗲 𝗡𝗮𝗺𝗲</b> 📚: "
+                msg += f"\n├<b>ꜰɪʟᴇ ɴᴀᴍᴇ</b> 📚: "
                 while(len(downloading_dir_name)>0):
                     st = downloading_dir_name[0:STR]
                     if(i==0):
@@ -365,16 +365,16 @@ async def check_progress_for_dl(aria2, gid, event, previous_message):
                         msg += f"\n│{st}"
                         downloading_dir_name = downloading_dir_name[STR:len(downloading_dir_name)]
 			
-                msg += f"\n├<b>𝗦𝗽𝗲𝗲𝗱</b> 🚀 :  <code>{file.download_speed_string()} </code>"
-                msg += f"\n├<b>𝗧𝗼𝘁𝗮𝗹 𝗦𝗶𝘇𝗲</b> 🗂 :  <code>{file.total_length_string()}</code>"
+                msg += f"\n├<b>ꜱᴘᴇᴇᴅ</b> 🚀 :  <code>{file.download_speed_string()} </code>"
+                msg += f"\n├<b>ᴛᴏᴛᴀʟ ꜱɪᴢᴇ</b> 🗂 :  <code>{file.total_length_string()}</code>"
 
                 if is_file is None :
-                   msg += f"\n├<b>𝗖𝗼𝗻𝗻𝗲𝗰𝘁𝗶𝗼𝗻𝘀</b> 📬 :  <code>{file.connections}</code>"
+                   msg += f"\n├<b>ᴄᴏɴɴᴇᴄᴛɪᴏɴꜱ</b> 📬 :  <code>{file.connections}</code>"
                 else :
-                   msg += f"\n├<b>𝐈𝐧𝐟𝐨</b> 📄 : <code>[ P : {file.connections} || S : {file.num_seeders} ]</code>"
+                   msg += f"\n├<b>ɪɴꜰᴏ</b> 📄 : <code>[ P : {file.connections} || S : {file.num_seeders} ]</code>"
 
-                # msg += f"\n<b>𝐒𝐭𝐚𝐭𝐮𝐬</b> : <code>{file.status}</code>"
-                msg += f"\n├<b>𝗘𝗧𝗔</b> ⏳ :  <code>{file.eta_string()}</code>" +"\n│"
+                # msg += f"\n<b>ꜱᴛᴀᴛᴜꜱ</b> : <code>{file.status}</code>"
+                msg += f"\n├<b>ᴇᴛᴀ</b> ⏳ :  <code>{file.eta_string()}</code>" +"\n│"
                 msg += "\n╰─── ⌊ ⚡️ using engine aria2 ⌉"
                 inline_keyboard = []
                 ikeyboard = []
