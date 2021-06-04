@@ -44,6 +44,8 @@ from tobrot import (
     YTDL_COMMAND,
     GYTDL_COMMAND,
     GPYTDL_COMMAND,
+    TOGGLE_VID,
+    TOGGLE_DOC,
 )
 from tobrot.helper_funcs.download import down_load_media_f
 from tobrot.plugins.call_back_button_handler import button
@@ -218,18 +220,15 @@ if __name__ == "__main__":
     )
     app.add_handler(save_thumb_nail_handler)
     #
-    #
     upload_as_doc_handler = MessageHandler(
         upload_as_doc,
-        filters=filters.command([f"{TOGGLE_DOC_COMMAND}"])
-        & filters.chat(chats=AUTH_CHANNEL),
+        filters=filters.command([f"{TOGGLE_DOC}"]) & filters.chat(chats=AUTH_CHANNEL), 
     )
     app.add_handler(upload_as_doc_handler)
     #
     upload_as_video_handler = MessageHandler(
         upload_as_video,
-        filters=filters.command([f"{TOGGLE_VIDEO_COMMAND}"])
-        & filters.chat(chats=AUTH_CHANNEL),
+        filters=filters.command([f"{TOGGLE_VID}"]) & filters.chat(chats=AUTH_CHANNEL), 
     )
     app.add_handler(upload_as_video_handler)
     clear_thumb_nail_handler = MessageHandler(
