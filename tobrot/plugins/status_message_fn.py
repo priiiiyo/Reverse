@@ -74,7 +74,7 @@ async def status_message_f(client, message):
     free = humanbytes(free)
 
     ms_g = (
-            f'╭──「  ⭕️ BOT STATISTICS ⭕️  」</b>\n' 
+            f'╭──「  ⭕️ BOT STATS ⭕️  」</b>\n' 
             f'│</b>\n' 
             f'├  ⏰ Bot Uptime : <code>{hr} : {mi} : {se}</code>\n' 
             f'├  💾 Total Disk : {total}</b>\n' 
