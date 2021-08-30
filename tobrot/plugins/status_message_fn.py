@@ -296,7 +296,7 @@ def up_time(time_taken):
 async def upload_log_file(client, message):
     g = await AdminCheck(client, message.chat.id, message.from_user.id)
     if g:
-        await message.reply_document("Torrentleech-Gdrive.txt")
+        await message.reply_document("priiiiyo-leech-bot.txt")
 
 async def upload_as_doc(client, message):
     user_specific_config[message.from_user.id]=UserDynaConfig(message.from_user.id,True)
