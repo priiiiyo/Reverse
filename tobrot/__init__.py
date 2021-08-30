@@ -49,6 +49,7 @@ for imp in ["TG_BOT_TOKEN", "APP_ID", "API_HASH", "OWNER_ID", "AUTH_CHANNEL"]:
         exit()
 
 # The Telegram API things
+BOT = os.environ.get("BOT", "")
 TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "")
 APP_ID = int(os.environ.get("APP_ID", "12345"))
 API_HASH = os.environ.get("API_HASH")
@@ -85,8 +86,8 @@ MAX_TIME_TO_WAIT_FOR_TORRENTS_TO_START = int(
 )
 MAX_TG_SPLIT_FILE_SIZE = int(os.environ.get("MAX_TG_SPLIT_FILE_SIZE", "1072864000"))
 # add config vars for the display progress
-FINISHED_PROGRESS_STR = os.environ.get("FINISHED_PROGRESS_STR", "█")
-UN_FINISHED_PROGRESS_STR = os.environ.get("UN_FINISHED_PROGRESS_STR", "░")
+FINISHED_PROGRESS_STR = os.environ.get("FINISHED_PROGRESS_STR", "■")
+UN_FINISHED_PROGRESS_STR = os.environ.get("UN_FINISHED_PROGRESS_STR", "□")
 # add offensive API
 TG_OFFENSIVE_API = os.environ.get("TG_OFFENSIVE_API", None)
 CUSTOM_FILE_NAME = os.environ.get("CUSTOM_FILE_NAME", "")
@@ -99,7 +100,7 @@ GLEECH_ZIP_COMMAND = os.environ.get("GLEECH_ZIP_COMMAND", "gleechzip")
 YTDL_COMMAND = os.environ.get("YTDL_COMMAND", "ytdl")
 GYTDL_COMMAND = os.environ.get("GYTDL_COMMAND", "gytdl")
 RCLONE_CONFIG = os.environ.get("RCLONE_CONFIG", "")
-DESTINATION_FOLDER = os.environ.get("DESTINATION_FOLDER", "TorrentLeech-Gdrive")
+DESTINATION_FOLDER = os.environ.get("DESTINATION_FOLDER", "Priiiiyo Leech Cloud")
 INDEX_LINK = os.environ.get("INDEX_LINK", "")
 TELEGRAM_LEECH_COMMAND = os.environ.get("TELEGRAM_LEECH_COMMAND", "tleech")
 TELEGRAM_LEECH_UNZIP_COMMAND = os.environ.get(
@@ -154,7 +155,6 @@ def multi_rclone_init():
                 fole.write(f.read())
         LOGGER.info("rclone.conf backuped to rclone_bak.conf!")
 
-user_specific_config=dict()
 
 multi_rclone_init()
 
