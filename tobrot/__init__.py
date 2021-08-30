@@ -154,6 +154,7 @@ def multi_rclone_init():
                 fole.write(f.read())
         LOGGER.info("rclone.conf backuped to rclone_bak.conf!")
 
+user_specific_config=dict()
 
 multi_rclone_init()
 
