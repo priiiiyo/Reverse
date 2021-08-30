@@ -11,69 +11,101 @@ import sys
 import time
 import traceback
 
-from tobrot.UserDynaConfig import UserDynaConfig
-from tobrot import AUTH_CHANNEL, BOT_START_TIME, LOGGER, MAX_MESSAGE_LENGTH, user_specific_config
+import psutil
+import math
+from pyrogram.errors import FloodWait, MessageIdInvalid, MessageNotModified
 from tobrot.helper_funcs.admin_check import AdminCheck
+from tobrot.UserDynaConfig import UserDynaConfig
+
+from tobrot import (
+    AUTH_CHANNEL,
+    BOT_START_TIME,
+    LOGGER,
+    MAX_MESSAGE_LENGTH, 
+    user_specific_config,
+    gid_dict,
+    _lock,
+    EDIT_SLEEP_TIME_OUT,
+    FINISHED_PROGRESS_STR,
+    UN_FINISHED_PROGRESS_STR
+    )
+
 
 # the logging things
 from tobrot.helper_funcs.display_progress import TimeFormatter, humanbytes
-from tobrot.helper_funcs.download_aria_p_n import aria_start, call_apropriate_function
+from tobrot.helper_funcs.download_aria_p_n import (aria_start,
+                                                   call_apropriate_function)
 from tobrot.helper_funcs.upload_to_tg import upload_to_tg
 
 
-async def status_message_f(client, message):
+async def status_message_f(
+    client, message
+):  # weird code but 'This is the way' @gautamajay52
     aria_i_p = await aria_start()
     # Show All Downloads
-    downloads = aria_i_p.get_downloads()
-    #
-    DOWNLOAD_ICON = "📥"
-    UPLOAD_ICON = "📤"
-    #
-    msg = ""
-    for download in downloads:
-        downloading_dir_name = "NA"
-        try:
-            downloading_dir_name = str(download.name)
-        except:
-            pass
-        if download.status == "active":
-            total_length_size = str(download.total_length_string())
-            progress_percent_string = str(download.progress_string())
-            down_speed_string = str(download.download_speed_string())
-            up_speed_string = str(download.upload_speed_string())
-            download_current_status = str(download.status)
-            e_t_a = str(download.eta_string())
-            current_gid = str(download.gid)
-            #
-            msg += f"<u>{downloading_dir_name}</u>"
-            msg += " | "
-            msg += f"{total_length_size}"
-            msg += " | "
-            msg += f"{progress_percent_string}"
-            msg += " | "
-            msg += f"{DOWNLOAD_ICON} {down_speed_string}"
-            msg += " | "
-            msg += f"{UPLOAD_ICON} {up_speed_string}"
-            msg += " | "
-            msg += f"{e_t_a}"
-            msg += " | "
-            msg += f"{download_current_status}"
-            msg += " | "
-            msg += f"<code>/cancel {current_gid}</code>"
-            msg += " | "
-            msg += "\n\n"
-        # LOGGER.info(msg)
+    to_edit = await message.reply(".......")
+    chat_id = int(message.chat.id)
+    mess_id = int(to_edit.message_id)
+    async with _lock:
+        if len(gid_dict[chat_id]) == 0:
+            gid_dict[chat_id].append(mess_id)
+        else:
+            if not mess_id in gid_dict[chat_id]:
+                await client.delete_messages(chat_id, gid_dict[chat_id])
+                gid_dict[chat_id].pop()
+                gid_dict[chat_id].append(mess_id)
 
-        if msg == "":
-            msg = "🤷‍♂️ No Active, Queued or Paused TORRENTs"
+    prev_mess = "By gautamajay52"
+    await message.delete()
+    while True:
+        downloads = aria_i_p.get_downloads()
+        msg = ""
+        for file in downloads:
+            downloading_dir_name = "NA"
+            try:
+                downloading_dir_name = str(file.name)
+            except:
+                pass
+            if file.status == "active":
+                is_file = file.seeder
+                if is_file is None:
+                    msgg = f"<b>Conn:</b> {file.connections}"
+                else:
+                    msgg = f"<b>[🟢𝙎: {file.num_seeders}|🔴𝙋: {file.connections}]</b>"
 
-    hr, mi, se = up_time(time.time() - BOT_START_TIME)
-    total, used, free = shutil.disk_usage(".")
-    total = humanbytes(total)
-    used = humanbytes(used)
-    free = humanbytes(free)
+                percentage = int(file.progress_string(0).split('%')[0])
+                prog = "[{0}{1}]".format("".join([FINISHED_PROGRESS_STR for i in range(math.floor(percentage / 5))]),"".join([UN_FINISHED_PROGRESS_STR for i in range(20 - math.floor(percentage / 5))]))
 
-    ms_g = (
+                msg += f"\n<b>╭──「  ⏬ 𝕯𝖔𝖜𝖓𝖑𝖔𝖆𝖉𝖎𝖓𝖌 ⏬  」</b>"
+                msg += f"\n<b>│</b>"
+                msg += f"\n<b>├</b> <code>{downloading_dir_name}</code>"
+                msg += f"\n<b>│</b>"
+                msg += f"\n<b>├</b> <b>{prog}</b>"
+                msg += f"\n<b>│</b>"
+                msg += f"\n<b>├  📦 𝐓𝐨𝐭𝐚𝐥 𝐒𝐢𝐳𝐞: {file.total_length_string()}</b>"
+                msg += f"\n<b>│</b>"
+                msg += f"\n<b>├  🔄 𝐏𝐫𝐨𝐠𝐫𝐞𝐬𝐬: {file.progress_string()}</b>"
+                msg += f"\n<b>│</b>"
+                msg += f"\n<b>├  ⏰ 𝐄𝐓𝐀: {file.eta_string()}</b>"
+                msg += f"\n<b>│</b>"
+                msg += f"\n<b>├  {msgg}</b>" 
+                msg += f"\n<b>│</b>"
+                msg += f"\n<b>├  ⚡️ 𝐒𝐩𝐞𝐞𝐝: {file.download_speed_string()}</b>" 
+                msg += f"\n<b>│</b>"
+                msg += f"\n<b>├  📋 𝐆𝐢𝐃:</b> <code>{gid}</code>"
+                msg += f"\n<b>│</b>"
+                msg += f"\n<b>╰──「 🚒 𝑼𝒔𝒊𝒏𝒈 𝑬𝒏𝒈𝒊𝒏𝒆:-Aria2 」</b>"
+                msg += "\n"
+
+        hr, mi, se = up_time(time.time() - BOT_START_TIME)
+        total, used, free = shutil.disk_usage(".")
+        ram = psutil.virtual_memory().percent
+        cpu = psutil.cpu_percent()
+        total = humanbytes(total)
+        used = humanbytes(used)
+        free = humanbytes(free)
+
+        ms_g = (
             f'╭──「  ⭕️ BOT STATS ⭕️  」</b>\n' 
             f'│</b>\n' 
             f'├  ⏰ Bot Uptime : <code>{hr} : {mi} : {se}</code>\n' 
@@ -83,19 +115,34 @@ async def status_message_f(client, message):
             f'│</b>\n' 
             f'╰──「 🚸 @PriiiiyoBOTs 🚸 」</b>'
     )
-    # LOGGER.info(ms_g)
-
-    msg = ms_g + "\n" + msg
-    LOGGER.info(msg)
-    if len(msg) > MAX_MESSAGE_LENGTH:
-        with io.BytesIO(str.encode(msg)) as out_file:
-            out_file.name = "status.text"
-            await client.send_document(
-                chat_id=message.chat.id,
-                document=out_file,
-            )
-    else:
-        await message.reply_text(msg, quote=True)
+        if msg == "":
+            msg = "🤷‍♂️ No Active, Queued or Paused TORRENTs"
+            msg = ms_g + "\n" + msg
+            await to_edit.edit(msg)
+            break
+        msg = msg + "\n" + ms_g
+        if len(msg) > MAX_MESSAGE_LENGTH:  # todo - will catch later
+            with io.BytesIO(str.encode(msg)) as out_file:
+                out_file.name = "status.text"
+                await client.send_document(
+                    chat_id=message.chat.id,
+                    document=out_file,
+                )
+            break
+        else:
+            if msg != prev_mess:
+                try:
+                    await to_edit.edit(msg, parse_mode="html")
+                except MessageIdInvalid as df:
+                    break
+                except MessageNotModified as ep:
+                    LOGGER.info(ep)
+                    await asyncio.sleep(EDIT_SLEEP_TIME_OUT)
+                except FloodWait as e:
+                    LOGGER.info(e)
+                    time.sleep(e.x)
+                await asyncio.sleep(EDIT_SLEEP_TIME_OUT)
+                prev_mess = msg
 
 
 async def cancel_message_f(client, message):
@@ -107,9 +154,16 @@ async def cancel_message_f(client, message):
         LOGGER.info(g_id)
         try:
             downloads = aria_i_p.get_download(g_id)
-            LOGGER.info(downloads)
-            LOGGER.info(downloads.remove(force=True, files=True))
-            await i_m_s_e_g.edit_text("Leech Cancelled")
+            name = downloads.name
+            size = downloads.total_length_string()
+            gid_list = downloads.followed_by_ids
+            downloads = [downloads]
+            if len(gid_list) != 0:
+                downloads = aria_i_p.get_downloads(gid_list)
+            aria_i_p.remove(downloads=downloads, force=True, files=True, clean=True)
+            await i_m_s_e_g.edit_text(
+                f"Download cancelled :\n<code>{name} ({size})</code> by <a href='tg://user?id={message.from_user.id}'>{message.from_user.first_name}</a>"
+            )
         except Exception as e:
             await i_m_s_e_g.edit_text("<i>FAILED</i>\n\n" + str(e) + "\n#error")
     else:
@@ -242,13 +296,13 @@ def up_time(time_taken):
 async def upload_log_file(client, message):
     g = await AdminCheck(client, message.chat.id, message.from_user.id)
     if g:
-        await message.reply_document("priiiiyo-leech-bot")
-       
+        await message.reply_document("Torrentleech-Gdrive.txt")
+
 async def upload_as_doc(client, message):
     user_specific_config[message.from_user.id]=UserDynaConfig(message.from_user.id,True)
-    await message.reply_text("File will be uploaded as Document")
+    await message.reply_text("**🗞 Your Files Will Be Uploaded As Document 📁**")
 
 
 async def upload_as_video(client, message):
     user_specific_config[message.from_user.id]=UserDynaConfig(message.from_user.id,False)
-    await message.reply_text("File will be uploaded as Video")
+    await message.reply_text("**🗞 Your Files Will Be Uploaded As Streamable 🎞**")
