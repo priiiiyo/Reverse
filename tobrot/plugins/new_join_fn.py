@@ -15,16 +15,19 @@ async def new_join_f(client, message):
     chat_type = message.chat.type
     if chat_type != "private":
         await message.reply_text(
-            f"""<b>𝗛𝗲𝗹𝗹𝗼𝘄 👾 !\n\n 𝗧𝗵𝗶𝘀 𝗜𝘀 𝗔 𝗧𝗲𝗹𝗲𝗴𝗿𝗮𝗺 𝗟𝗲𝗲𝗰𝗵 𝗕𝗼𝘁 🧲</b>\n\n<b>𝗗𝗲𝘃𝗲𝗹𝗼𝗽𝗲𝗿 👨🏻‍💻 : @priiiiyo""",
+            '<b>𝗛𝗲𝗹𝗹𝗼𝘄 👾 !\n\n 𝗧𝗵𝗶𝘀 𝗜𝘀 𝗔 𝗧𝗲𝗹𝗲𝗴𝗿𝗮𝗺 𝗟𝗲𝗲𝗰𝗵 𝗕𝗼𝘁 🧲</b>\n\n<b>𝗗𝗲𝘃𝗲𝗹𝗼𝗽𝗲𝗿 👨🏻\u200d💻 : @priiiiyo',
             parse_mode="html",
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
-                        InlineKeyboardButton('𝗖𝗵𝗮𝗻𝗻𝗲𝗹', url='https://t.me/PriiiiyoBOTs')
+                        InlineKeyboardButton(
+                            '𝗖𝗵𝗮𝗻𝗻𝗲𝗹', url='https://t.me/PriiiiyoBOTs'
+                        )
                     ]
                 ]
-               )
-            )
+            ),
+        )
+
         # leave chat
         await client.leave_chat(chat_id=message.chat.id, delete=True)
     # delete all other messages, except for AUTH_CHANNEL

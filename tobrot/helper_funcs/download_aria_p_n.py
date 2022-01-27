@@ -56,8 +56,8 @@ tracker_urlsss = [
     ]
 tumtorrenttrackerstringi = ""
 sonstringtrckr = ""
-for i in range(len(tracker_urlsss)):
-    response = requests.get(tracker_urlsss[i])
+for tracker_urlss in tracker_urlsss:
+    response = requests.get(tracker_urlss)
     response.encoding = "utf-8"
     tumtorrenttrackerstringi += "\n"
     tumtorrenttrackerstringi += response.text
@@ -71,27 +71,23 @@ async def aria_start():
     # start the daemon, aria2c command
 
 async def aria_start():
-    aria2_daemon_start_cmd = []
-    # start the daemon, aria2c command
-    aria2_daemon_start_cmd.append("aria2c")
-    aria2_daemon_start_cmd.append("--allow-overwrite=true")
-    aria2_daemon_start_cmd.append("--daemon=true")
-    # aria2_daemon_start_cmd.append(f"--dir={DOWNLOAD_LOCATION}")
-    # TODO: this does not work, need to investigate this.
-    # but for now, https://t.me/TrollVoiceBot?start=858
-    aria2_daemon_start_cmd.append("--enable-rpc")
-    aria2_daemon_start_cmd.append("--follow-torrent=mem")
-    aria2_daemon_start_cmd.append("--max-connection-per-server=10")
-    aria2_daemon_start_cmd.append("--min-split-size=10M")
-    aria2_daemon_start_cmd.append("--rpc-listen-all=false")
-    aria2_daemon_start_cmd.append(f"--rpc-listen-port={ARIA_TWO_STARTED_PORT}")
-    aria2_daemon_start_cmd.append("--rpc-max-request-size=1024M")
-    aria2_daemon_start_cmd.append("--seed-time=0")
-    aria2_daemon_start_cmd.append("--max-overall-upload-limit=1K")
-    aria2_daemon_start_cmd.append("--split=10")
-    aria2_daemon_start_cmd.append(
-        f"--bt-stop-timeout={MAX_TIME_TO_WAIT_FOR_TORRENTS_TO_START}"
-    )
+    aria2_daemon_start_cmd = [
+        'aria2c',
+        '--allow-overwrite=true',
+        '--daemon=true',
+        '--enable-rpc',
+        '--follow-torrent=mem',
+        '--max-connection-per-server=10',
+        '--min-split-size=10M',
+        '--rpc-listen-all=false',
+        f"--rpc-listen-port={ARIA_TWO_STARTED_PORT}",
+        '--rpc-max-request-size=1024M',
+        '--seed-time=0',
+        '--max-overall-upload-limit=1K',
+        '--split=10',
+        f"--bt-stop-timeout={MAX_TIME_TO_WAIT_FOR_TORRENTS_TO_START}",
+    ]
+
     #
     LOGGER.info(aria2_daemon_start_cmd)
     #
@@ -103,10 +99,11 @@ async def aria_start():
     stdout, stderr = await process.communicate()
     LOGGER.info(stdout)
     LOGGER.info(stderr)
-    aria2 = aria2p.API(
-        aria2p.Client(host="http://localhost", port=ARIA_TWO_STARTED_PORT, secret="")
+    return aria2p.API(
+        aria2p.Client(
+            host="http://localhost", port=ARIA_TWO_STARTED_PORT, secret=""
+        )
     )
-    return aria2
 
 
 def add_magnet(aria_instance, magnetic_link, c_file_name):
@@ -248,19 +245,18 @@ async def call_apropriate_function(
                 f"Can't extract {os.path.basename(to_upload_file)}, Uploading the same file"
             )
 
-    if to_upload_file:
-        if CUSTOM_FILE_NAME:
-            if os.path.isfile(to_upload_file):
-                os.rename(to_upload_file, f"{CUSTOM_FILE_NAME}{to_upload_file}")
-                to_upload_file = f"{CUSTOM_FILE_NAME}{to_upload_file}"
-            else:
-                for root, _, files in os.walk(to_upload_file):
-                    LOGGER.info(files)
-                    for org in files:
-                        p_name = f"{root}/{org}"
-                        n_name = f"{root}/{CUSTOM_FILE_NAME}{org}"
-                        os.rename(p_name, n_name)
-                to_upload_file = to_upload_file
+    if to_upload_file and CUSTOM_FILE_NAME:
+        if os.path.isfile(to_upload_file):
+            os.rename(to_upload_file, f"{CUSTOM_FILE_NAME}{to_upload_file}")
+            to_upload_file = f"{CUSTOM_FILE_NAME}{to_upload_file}"
+        else:
+            for root, _, files in os.walk(to_upload_file):
+                LOGGER.info(files)
+                for org in files:
+                    p_name = f"{root}/{org}"
+                    n_name = f"{root}/{CUSTOM_FILE_NAME}{org}"
+                    os.rename(p_name, n_name)
+            to_upload_file = to_upload_file
 
     if cstom_file_name:
         os.rename(to_upload_file, cstom_file_name)
@@ -293,14 +289,14 @@ async def call_apropriate_function(
                     message_to_send += local_file_name
                     message_to_send += "</a>"
                     message_to_send += "\n"
-                if message_to_send != "":
+                if not message_to_send:
+                    message_to_send = "<i>FAILED</i> to upload files. 😞😞"
+                else:
                     mention_req_user = (
                         f"<a href='tg://user?id={user_id}'>ꜱᴏᴜʀᴄᴇ ᴄᴏᴅᴇ 😑</a>\n\n"
                     )
                     message_to_send = mention_req_user + message_to_send
                     message_to_send = message_to_send + "\n\n" + "✅ 𝗣𝗼𝘄𝗲𝗿𝗲𝗱 𝗕𝘆 : @PriiiiyoBOTs"
-                else:
-                    message_to_send = "<i>FAILED</i> to upload files. 😞😞"
                 await user_message.reply_text(
                     text=message_to_send, quote=True, disable_web_page_preview=True
                 )
@@ -321,7 +317,6 @@ async def check_progress_for_dl(aria2, gid, event, previous_message):
         is_file = file.seeder
         if not complete:
             if not file.error_message:
-                msg = ""
                 # sometimes, this weird https://t.me/c/1220993104/392975
                 # error creeps up
                 # TODO: temporary workaround
@@ -334,37 +329,38 @@ async def check_progress_for_dl(aria2, gid, event, previous_message):
                     pass
                 #
                 prog = pyprog.ProgressBar(" ", " ", total=100, bar_length=15, complete_symbol="■", not_complete_symbol="□", wrap_bar_prefix=" [", wrap_bar_suffix="]", progress_explain="", progress_loc=pyprog.ProgressBar.PROGRESS_LOC_END)
-                
+
                 old_stdout = sys.stdout
                 new_stdout = io.StringIO()
                 sys.stdout = new_stdout
-                
+
                 p = file.progress_string()
                 l = len(p)
-                p=p[0:l-1]
+                p = p[:l-1]
                 a = float(p)
-                
+
                 prog.set_stat(a)
                 prog.update()
                 output = new_stdout.getvalue()
                 sys.stdout = old_stdout
                 prg = output[3:len(output)]
+                STR = int(os.environ.get("STR", 30))
+                msg = ""
+                msg = '╭──── ⌊ 📥 <b>𝑫𝒐𝒘𝒏𝒍𝒐𝒂𝒅𝒊𝒏𝒈...</b> ⌉ \n'
+                msg += "│"+"\n├"+f"{prg}\n" +"│"
+                msg += '\n├<b>ꜰɪʟᴇ ɴᴀᴍᴇ</b> 📚: '
                 i = 0
                 i = int(i)
-                STR = int(os.environ.get("STR", 30))
-                msg = f"╭──── ⌊ 📥 <b>𝑫𝒐𝒘𝒏𝒍𝒐𝒂𝒅𝒊𝒏𝒈...</b> ⌉ \n"
-                msg += "│"+"\n├"+f"{prg}\n" +"│"
-                msg += f"\n├<b>ꜰɪʟᴇ ɴᴀᴍᴇ</b> 📚: "
-                while(len(downloading_dir_name)>0):
-                    st = downloading_dir_name[0:STR]
-                    if(i==0):
-                        msg += f"{downloading_dir_name[0:STR-15]}"
+                while downloading_dir_name != '':
+                    st = downloading_dir_name[:STR]
+                    if (i==0):
+                        msg += f'{downloading_dir_name[:STR-15]}'
                         downloading_dir_name = downloading_dir_name[STR-15:len(downloading_dir_name)]
                         i = 1
                     else:
                         msg += f"\n│{st}"
                         downloading_dir_name = downloading_dir_name[STR:len(downloading_dir_name)]
-			
+
                 msg += f"\n├<b>ꜱᴘᴇᴇᴅ</b> 🚀 :  <code>{file.download_speed_string()} </code>"
                 msg += f"\n├<b>ᴛᴏᴛᴀʟ ꜱɪᴢᴇ</b> 🗂 :  <code>{file.total_length_string()}</code>"
 
@@ -376,14 +372,14 @@ async def check_progress_for_dl(aria2, gid, event, previous_message):
                 # msg += f"\n<b>ꜱᴛᴀᴛᴜꜱ</b> : <code>{file.status}</code>"
                 msg += f"\n├<b>ᴇᴛᴀ</b> ⏳ :  <code>{file.eta_string()}</code>" +"\n│"
                 msg += "\n╰─── ⌊ ⚡️ using engine aria2 ⌉"
-                inline_keyboard = []
-                ikeyboard = []
-                ikeyboard.append(
+                ikeyboard = [
                     InlineKeyboardButton(
-                        "𝐂𝐚𝐧𝐜𝐞𝐥 🚫", callback_data=(f"cancel {gid}").encode("UTF-8")
+                        "𝐂𝐚𝐧𝐜𝐞𝐥 🚫",
+                        callback_data=(f"cancel {gid}").encode("UTF-8"),
                     )
-                )
-                inline_keyboard.append(ikeyboard)
+                ]
+
+                inline_keyboard = [ikeyboard]
                 reply_markup = InlineKeyboardMarkup(inline_keyboard)
                 if msg != previous_message:
                     if not file.has_failed:
@@ -446,13 +442,13 @@ async def check_progress_for_dl(aria2, gid, event, previous_message):
             await event.edit(
                 f"Download cancelled ❌:\n<code>{file.name} ({file.total_length_string()})</code>"
             )
-            return False
         else:
             LOGGER.info(str(e))
             await event.edit(
                 "<u>error</u> :\n<code>{}</code> \n\n#error".format(str(e))
             )
-            return False
+
+        return False
 
 
 # https://github.com/jaskaranSM/UniBorg/blob/6d35cf452bce1204613929d4da7530058785b6b1/stdplugins/aria.py#L136-L164
